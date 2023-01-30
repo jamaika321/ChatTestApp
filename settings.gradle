@@ -14,3 +14,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "ChatTestApp"
 include ':app'
+include ':api'
+include ':core-network'
+include ':core-network'
