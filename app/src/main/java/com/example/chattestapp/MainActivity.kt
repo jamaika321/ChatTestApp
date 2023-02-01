@@ -3,7 +3,7 @@ package com.example.chattestapp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.chattestapp.databinding.ActivityMainBinding
-import com.example.chattestapp.ui.LoginFragment
+import com.example.chattestapp.ui.loginFragment.LoginFragment
 import com.example.chattestapp.utils.APP_ACTIVITY
 import com.example.chattestapp.utils.replaceFragment
 

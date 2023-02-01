@@ -3,6 +3,7 @@ package com.example.core_network
 import com.example.api.models.*
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface ApiService {
@@ -16,7 +17,10 @@ interface ApiService {
     @POST("register/")
     fun register(@Body phoneNumber: RegisterRequestBody): Call<RegisterResponseBody>
 
-//    @GET("/me/")
-//    fun getUserInfo(): Call
+    @GET("me/")
+    fun getUserInfo(): Call<UserInfo>
+
+    @POST("refresh-token/")
+    fun refreshToken(refreshTokenRequestBody: RefreshTokenRequestBody): Call<RefreshTokenResponseBody>
 
 }

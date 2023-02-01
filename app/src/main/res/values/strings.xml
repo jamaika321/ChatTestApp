@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">ChatTestApp</string>
     <string name="empty_number">Введите номер телефона!</string>
+    <string name="verification_code_empty">Введите код верификации!</string>
 </resources>

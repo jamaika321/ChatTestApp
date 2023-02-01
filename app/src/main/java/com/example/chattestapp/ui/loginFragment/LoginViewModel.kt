@@ -1,4 +1,4 @@
-package com.example.chattestapp.ui
+package com.example.chattestapp.ui.loginFragment
 
 import androidx.lifecycle.ViewModel
 import com.example.api.interfaces.Repository
@@ -7,7 +7,7 @@ import retrofit2.Call
 import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
-    fun sendAuthCode(phoneNumber: String): Call<AuthUserResponseBody> {
+    suspend fun sendAuthCode(phoneNumber: String): Call<AuthUserResponseBody> {
         return repository.authorizationWithPhone(phoneNumber)
     }
 }

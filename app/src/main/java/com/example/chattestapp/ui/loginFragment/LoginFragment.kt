@@ -1,7 +1,6 @@
-package com.example.chattestapp.ui
+package com.example.chattestapp.ui.loginFragment
 
 import android.content.Context
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,14 +11,20 @@ import com.example.api.models.AuthUserResponseBody
 import com.example.chattestapp.App
 import com.example.chattestapp.R
 import com.example.chattestapp.databinding.FragmentLoginBinding
+import com.example.chattestapp.ui.verifyFragment.VerifyFragment
 import com.example.chattestapp.utils.replaceFragment
 import com.example.chattestapp.utils.showToast
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import javax.inject.Inject
 
 class LoginFragment : Fragment() {
+
+    private val TAG = "LoginFragment"
 
     @Inject
     lateinit var viewModel: LoginViewModel
@@ -43,25 +48,28 @@ class LoginFragment : Fragment() {
         if (binding.phoneNumber.text.isNullOrEmpty()){
             showToast(getString(R.string.empty_number))
         } else {
-            sendAuthCode("+7" + binding.phoneNumber.text.toString())
+//            sendAuthCode("+7" + binding.phoneNumber.text.toString())
+            replaceFragment(VerifyFragment(), true)
         }
     }
 
     private fun sendAuthCode(phoneNumber: String){
-        viewModel.sendAuthCode(phoneNumber).enqueue(object: Callback<AuthUserResponseBody> {
-            override fun onResponse(
-                call: Call<AuthUserResponseBody>,
-                response: Response<AuthUserResponseBody>
-            ) {
-                Log.i("LoginFragment", "onResponse: ${response.body()}")
-                // replaceFragment(VerifyFragment)
-            }
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.sendAuthCode(phoneNumber).enqueue(object : Callback<AuthUserResponseBody> {
+                override fun onResponse(
+                    call: Call<AuthUserResponseBody>,
+                    response: Response<AuthUserResponseBody>
+                ) {
+                    Log.i(TAG, "onResponse: ${response.body()}")
+                    replaceFragment(VerifyFragment(), true)
+                }
 
-            override fun onFailure(call: Call<AuthUserResponseBody>, t: Throwable) {
-                Log.i("LoginFragment", "onFailure: $t")
-            }
+                override fun onFailure(call: Call<AuthUserResponseBody>, t: Throwable) {
+                    Log.i(TAG, "onFailure: $t")
+                }
 
-        })
+            })
+        }
     }
 
 
