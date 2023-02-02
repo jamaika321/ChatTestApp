@@ -10,4 +10,8 @@ class App: Application() {
     val appComponent: AppComponent by lazy {
         DaggerAppComponent.factory().create(DomainModule(this))
     }
+
+    companion object {
+        lateinit var user:String
+    }
 }

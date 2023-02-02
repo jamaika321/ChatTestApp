@@ -13,6 +13,7 @@ import com.example.api.models.CheckAuthCodeResponseBody
 import com.example.chattestapp.App
 import com.example.chattestapp.R
 import com.example.chattestapp.databinding.FragmentVerifyBinding
+import com.example.chattestapp.ui.homeFragment.HomeFragment
 import com.example.chattestapp.ui.registerFragment.RegistrationFragment
 import com.example.chattestapp.utils.replaceFragment
 import com.example.chattestapp.utils.showToast
@@ -50,7 +51,9 @@ class VerifyFragment : Fragment() {
         if (binding.etVerifyCode.text.toString().length < 6){
             showToast(getString(R.string.verification_code_empty))
         } else {
-            sendAuthCode(binding.etVerifyCode.text.toString())
+//            sendAuthCode(binding.etVerifyCode.text.toString())
+            // TODO
+            replaceFragment(HomeFragment(), false)
         }
     }
     
@@ -67,6 +70,7 @@ class VerifyFragment : Fragment() {
                             CoroutineScope(Dispatchers.IO).launch {
                                 viewModel.saveUserToken(response.body()!!)
                             }
+                            replaceFragment(HomeFragment(), false)
                         } else {
                             replaceFragment(RegistrationFragment(), true)
                         }

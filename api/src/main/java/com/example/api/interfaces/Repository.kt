@@ -1,6 +1,7 @@
 package com.example.api.interfaces
 
 import com.example.api.models.AuthUserResponseBody
+import com.example.api.models.ChatItemView
 import com.example.api.models.CheckAuthCodeResponseBody
 import retrofit2.Call
 
@@ -10,4 +11,5 @@ interface Repository {
 
     suspend fun saveAccessToken(accessToken: CheckAuthCodeResponseBody)
     suspend fun getUserToken(): CheckAuthCodeResponseBody
+    fun getChatsList(): List<ChatItemView>
 }

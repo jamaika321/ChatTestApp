@@ -49,6 +49,7 @@ class LoginFragment : Fragment() {
             showToast(getString(R.string.empty_number))
         } else {
 //            sendAuthCode("+7" + binding.phoneNumber.text.toString())
+            // TODO
             replaceFragment(VerifyFragment(), true)
         }
     }
