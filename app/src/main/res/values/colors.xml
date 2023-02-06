@@ -9,4 +9,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="grey_blur">#595959</color>
+    <color name="primary_background_color">#FFF9D3</color>
+    <color name="clear_black">#8A000000</color>
 </resources>

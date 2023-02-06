@@ -13,6 +13,7 @@ import com.example.api.models.CheckAuthCodeResponseBody
 import com.example.chattestapp.App
 import com.example.chattestapp.R
 import com.example.chattestapp.databinding.FragmentVerifyBinding
+import com.example.chattestapp.ui.base.BaseFragment
 import com.example.chattestapp.ui.homeFragment.HomeFragment
 import com.example.chattestapp.ui.registerFragment.RegistrationFragment
 import com.example.chattestapp.utils.replaceFragment
@@ -25,35 +26,26 @@ import retrofit2.Callback
 import retrofit2.Response
 import javax.inject.Inject
 
-class VerifyFragment : Fragment() {
+class VerifyFragment : BaseFragment<FragmentVerifyBinding>() {
     
     private val TAG = "VerifyFragment"
 
     @Inject
     lateinit var viewModel: VerifyViewModel
 
-    private lateinit var binding: FragmentVerifyBinding
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentVerifyBinding.inflate(layoutInflater)
-
-        binding.verifyBtn.setOnClickListener { 
+    override fun setListeners() {
+        binding.verifyBtn.setOnClickListener {
             checkVerifyCode()
         }
-        
-        return binding.root
+        super.setListeners()
     }
 
     private fun checkVerifyCode(){
         if (binding.etVerifyCode.text.toString().length < 6){
             showToast(getString(R.string.verification_code_empty))
         } else {
-//            sendAuthCode(binding.etVerifyCode.text.toString())
+            sendAuthCode(binding.etVerifyCode.text.toString())
             // TODO
-            replaceFragment(HomeFragment(), false)
         }
     }
     
@@ -66,10 +58,10 @@ class VerifyFragment : Fragment() {
                 ) {
                     Log.i(TAG, "onResponse: ${response.body()}")
                     response.body().let {
+                        CoroutineScope(Dispatchers.IO).launch {
+                            viewModel.saveUserToken(response.body()!!)
+                        }
                         if (it?.isUserExists == true) {
-                            CoroutineScope(Dispatchers.IO).launch {
-                                viewModel.saveUserToken(response.body()!!)
-                            }
                             replaceFragment(HomeFragment(), false)
                         } else {
                             replaceFragment(RegistrationFragment(), true)
@@ -88,6 +80,14 @@ class VerifyFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         (requireActivity().application as App).appComponent.inject(this)
+    }
+
+    override fun initBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): FragmentVerifyBinding {
+        return FragmentVerifyBinding.inflate(inflater, container, false)
     }
 
 }

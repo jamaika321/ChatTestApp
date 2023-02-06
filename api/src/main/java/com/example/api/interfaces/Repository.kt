@@ -10,6 +10,6 @@ interface Repository {
     suspend fun checkAuthCode(code: String): Call<CheckAuthCodeResponseBody>
 
     suspend fun saveAccessToken(accessToken: CheckAuthCodeResponseBody)
-    suspend fun getUserToken(): CheckAuthCodeResponseBody
+    fun getUserToken(): CheckAuthCodeResponseBody
     fun getChatsList(): List<ChatItemView>
 }

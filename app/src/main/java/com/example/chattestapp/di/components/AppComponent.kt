@@ -1,11 +1,12 @@
 package com.example.chattestapp.di.components
 
-import com.example.chattestapp.MainActivity
+import com.example.chattestapp.ui.MainActivity
 import com.example.chattestapp.di.modules.DataModule
 import com.example.chattestapp.di.modules.DomainModule
 import com.example.chattestapp.ui.chatFragment.ChatFragment
 import com.example.chattestapp.ui.homeFragment.HomeFragment
 import com.example.chattestapp.ui.loginFragment.LoginFragment
+import com.example.chattestapp.ui.profileFragment.ProfileFragment
 import com.example.chattestapp.ui.registerFragment.RegistrationFragment
 import com.example.chattestapp.ui.verifyFragment.VerifyFragment
 import dagger.Component
@@ -25,4 +26,5 @@ interface AppComponent {
     fun inject(registrationFragment: RegistrationFragment)
     fun inject(homeFragment: HomeFragment)
     fun inject(chatFragment: ChatFragment)
+    fun inject(profileFragment: ProfileFragment)
 }

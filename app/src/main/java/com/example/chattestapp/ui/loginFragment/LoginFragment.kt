@@ -11,8 +11,10 @@ import com.example.api.models.AuthUserResponseBody
 import com.example.chattestapp.App
 import com.example.chattestapp.R
 import com.example.chattestapp.databinding.FragmentLoginBinding
+import com.example.chattestapp.ui.base.BaseFragment
 import com.example.chattestapp.ui.verifyFragment.VerifyFragment
 import com.example.chattestapp.utils.replaceFragment
+import com.example.chattestapp.utils.restartActivity
 import com.example.chattestapp.utils.showToast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,35 +24,25 @@ import retrofit2.Callback
 import retrofit2.Response
 import javax.inject.Inject
 
-class LoginFragment : Fragment() {
+class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     private val TAG = "LoginFragment"
 
     @Inject
     lateinit var viewModel: LoginViewModel
 
-    private lateinit var binding: FragmentLoginBinding
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentLoginBinding.inflate(layoutInflater)
-
+    override fun setListeners() {
         binding.loginBtn.setOnClickListener {
             checkNumber()
         }
-
-        return binding.root
+        super.setListeners()
     }
 
     private fun checkNumber(){
         if (binding.phoneNumber.text.isNullOrEmpty()){
             showToast(getString(R.string.empty_number))
         } else {
-//            sendAuthCode("+7" + binding.phoneNumber.text.toString())
-            // TODO
-            replaceFragment(VerifyFragment(), true)
+            sendAuthCode("+7" + binding.phoneNumber.text.toString())
         }
     }
 
@@ -62,11 +54,13 @@ class LoginFragment : Fragment() {
                     response: Response<AuthUserResponseBody>
                 ) {
                     Log.i(TAG, "onResponse: ${response.body()}")
-                    replaceFragment(VerifyFragment(), true)
+                    replaceFragment(VerifyFragment(), true, "phone", phoneNumber)
                 }
 
                 override fun onFailure(call: Call<AuthUserResponseBody>, t: Throwable) {
                     Log.i(TAG, "onFailure: $t")
+                    // TODO
+                    restartActivity()
                 }
 
             })
@@ -77,5 +71,13 @@ class LoginFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         (requireActivity().application as App).appComponent.inject(this)
+    }
+
+    override fun initBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): FragmentLoginBinding {
+        return FragmentLoginBinding.inflate(inflater, container, false)
     }
 }

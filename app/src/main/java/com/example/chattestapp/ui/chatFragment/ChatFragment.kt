@@ -14,25 +14,19 @@ import com.example.chattestapp.App
 import com.example.chattestapp.R
 import com.example.chattestapp.databinding.FragmentChatBinding
 import com.example.chattestapp.ui.adapters.MessagesAdapter
+import com.example.chattestapp.ui.base.BaseFragment
 import com.example.chattestapp.ui.homeFragment.HomeFragment
 import com.example.chattestapp.utils.replaceFragment
 import com.example.chattestapp.utils.showToast
 import javax.inject.Inject
 
-class ChatFragment : Fragment() {
+class ChatFragment : BaseFragment<FragmentChatBinding>() {
 
     @Inject
     lateinit var viewModel: ChatViewModel
-    private lateinit var binding: FragmentChatBinding
     private lateinit var adapter: MessagesAdapter
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentChatBinding.inflate(layoutInflater)
-
+    override fun setListeners() {
         App.user = "Alex"
 
         adapter = MessagesAdapter(requireContext())
@@ -53,13 +47,11 @@ class ChatFragment : Fragment() {
         binding.rcViewMessages.adapter = adapter
 
 
-        val result = this.requireArguments().getString("bundleKey")
+        val result = this.requireArguments().getString("chat")
         if (!result.isNullOrEmpty()){
             showId(result)
         }
-
-
-        return binding.root
+        super.setListeners()
     }
 
     private fun showId(id: String){
@@ -69,5 +61,13 @@ class ChatFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         (requireActivity().application as App).appComponent.inject(this)
+    }
+
+    override fun initBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): FragmentChatBinding {
+        return FragmentChatBinding.inflate(inflater, container, false)
     }
 }

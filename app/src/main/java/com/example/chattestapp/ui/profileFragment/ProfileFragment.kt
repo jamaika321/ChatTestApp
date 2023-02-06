@@ -1,21 +1,31 @@
-package com.example.chattestapp.ui.registerFragment
+package com.example.chattestapp.ui.profileFragment
 
 import android.content.Context
+import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import com.example.chattestapp.App
 import com.example.chattestapp.R
-import com.example.chattestapp.databinding.FragmentRegistrationBinding
+import com.example.chattestapp.databinding.FragmentProfileBinding
 import com.example.chattestapp.ui.base.BaseFragment
 import javax.inject.Inject
 
-class RegistrationFragment : BaseFragment<FragmentRegistrationBinding>() {
+class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
     @Inject
-    lateinit var viewModel: RegistrationViewModel
+    lateinit var viewModel: ProfileViewModel
+
+    override fun setListeners() {
+
+
+
+
+        super.setListeners()
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -26,7 +36,7 @@ class RegistrationFragment : BaseFragment<FragmentRegistrationBinding>() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): FragmentRegistrationBinding {
-        return FragmentRegistrationBinding.inflate(inflater, container, false)
+    ): FragmentProfileBinding {
+        return FragmentProfileBinding.inflate(inflater, container, false)
     }
 }

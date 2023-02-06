@@ -4,12 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.chattestapp.MainActivity
+import com.example.chattestapp.ui.MainActivity
 import com.example.chattestapp.R
 
-fun replaceFragment(fragment: Fragment, addStack: Boolean = true, message : String = "") {
+fun replaceFragment(fragment: Fragment, addStack: Boolean = true, key: String = "",  message : String = "") {
     val args = Bundle()
-    args.putString("bundleKey", message)
+    args.putString(key, message)
     if (addStack) {
         APP_ACTIVITY.supportFragmentManager.beginTransaction()
             .addToBackStack(null)

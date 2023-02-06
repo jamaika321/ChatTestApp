@@ -26,7 +26,7 @@ class RepositoryImpl @Inject constructor(private val db: AppDatabase) : Reposito
         db.userInfoDao().saveAccessToken(accessToken)
     }
 
-    override suspend fun getUserToken(): CheckAuthCodeResponseBody {
+    override fun getUserToken(): CheckAuthCodeResponseBody {
         return db.userInfoDao().getUserToken()
     }
 

@@ -13,5 +13,5 @@ interface UserInfoDao {
     fun getUserToken(): CheckAuthCodeResponseBody
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun saveAccessToken(accessToken: CheckAuthCodeResponseBody)
+    suspend fun saveAccessToken(accessToken: CheckAuthCodeResponseBody)
 }

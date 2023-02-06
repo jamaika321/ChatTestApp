@@ -1,6 +1,6 @@
 package com.example.chattestapp.utils
 
-import com.example.chattestapp.MainActivity
+import com.example.chattestapp.ui.MainActivity
 
 lateinit var APP_ACTIVITY: MainActivity
 const val VIEW_TYPE_MY_MESSAGE = 1
