@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">ChatTestApp</string>
+    <string name="empty_number">Введите номер телефона!</string>
+    <string name="verification_code_empty">Введите код верификации!</string>
+    <string name="message">Сообщение...</string>
+    <string name="registration">Регистрация</string>
+    <string name="phone_number">Номер телефона</string>
+    <string name="name">Имя</string>
+    <string name="user_name">Имя пользователя</string>
+    <string name="registration_btn">Зарегистрироваться</string>
 </resources>
