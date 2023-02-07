@@ -8,11 +8,11 @@ import com.google.gson.annotations.SerializedName
 data class CheckAuthCodeResponseBody (
     @PrimaryKey
     @SerializedName("refresh_token")
-    var refreshToken: String,
+    var refreshToken: String = "",
     @SerializedName("access_token")
-    var accessToken: String,
+    var accessToken: String = "",
     @SerializedName("user_id")
     var userId: Int,
     @SerializedName("is_user_exists")
-    var isUserExists: Boolean
+    var isUserExists: Boolean = false
     )

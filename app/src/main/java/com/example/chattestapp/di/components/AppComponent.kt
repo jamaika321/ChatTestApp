@@ -7,7 +7,7 @@ import com.example.chattestapp.ui.chatFragment.ChatFragment
 import com.example.chattestapp.ui.homeFragment.HomeFragment
 import com.example.chattestapp.ui.loginFragment.LoginFragment
 import com.example.chattestapp.ui.profileFragment.ProfileFragment
-import com.example.chattestapp.ui.registerFragment.RegistrationFragment
+import com.example.chattestapp.ui.registrationFragment.RegistrationFragment
 import com.example.chattestapp.ui.verifyFragment.VerifyFragment
 import dagger.Component
 import javax.inject.Singleton

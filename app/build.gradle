@@ -43,6 +43,7 @@ dependencies {
     api project(path: ':api')
     api project(path: ':core-network')
     api project(path: ':core-db')
+    api project(path: ':entities')
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.6.0'

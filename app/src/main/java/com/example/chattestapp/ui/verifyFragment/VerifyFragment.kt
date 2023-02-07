@@ -1,23 +1,21 @@
 package com.example.chattestapp.ui.verifyFragment
 
 import android.content.Context
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.example.api.models.CheckAuthCodeResponseBody
+import com.example.api.models.ErrorResponseBody
 import com.example.chattestapp.App
 import com.example.chattestapp.R
 import com.example.chattestapp.databinding.FragmentVerifyBinding
 import com.example.chattestapp.ui.base.BaseFragment
 import com.example.chattestapp.ui.homeFragment.HomeFragment
-import com.example.chattestapp.ui.registerFragment.RegistrationFragment
+import com.example.chattestapp.ui.registrationFragment.RegistrationFragment
 import com.example.chattestapp.utils.replaceFragment
 import com.example.chattestapp.utils.showToast
+import com.example.entities.Either
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -51,30 +49,37 @@ class VerifyFragment : BaseFragment<FragmentVerifyBinding>() {
     
     private fun sendAuthCode(code: String){
         CoroutineScope(Dispatchers.IO).launch {
-            viewModel.checkAuthCode(code).enqueue(object : Callback<CheckAuthCodeResponseBody> {
+            viewModel.checkAuthCode(code).enqueue(object : Callback<Either<ErrorResponseBody, CheckAuthCodeResponseBody>> {
                 override fun onResponse(
-                    call: Call<CheckAuthCodeResponseBody>,
-                    response: Response<CheckAuthCodeResponseBody>
+                    call: Call<Either<ErrorResponseBody, CheckAuthCodeResponseBody>>,
+                    response: Response<Either<ErrorResponseBody, CheckAuthCodeResponseBody>>
                 ) {
-                    Log.i(TAG, "onResponse: ${response.body()}")
                     response.body().let {
-                        CoroutineScope(Dispatchers.IO).launch {
-                            viewModel.saveUserToken(response.body()!!)
-                        }
-                        if (it?.isUserExists == true) {
-                            replaceFragment(HomeFragment(), false)
-                        } else {
-                            replaceFragment(RegistrationFragment(), true)
-                        }
+                        it!!.either(::loadError, ::loadSuccess)
                     }
                 }
 
-                override fun onFailure(call: Call<CheckAuthCodeResponseBody>, t: Throwable) {
-                    Log.i(TAG, "onFailure: $t")
-                }
+                override fun onFailure(call: Call<Either<ErrorResponseBody, CheckAuthCodeResponseBody>>, t: Throwable) {
 
+                }
             })
         }
+    }
+
+    private fun loadSuccess(response: CheckAuthCodeResponseBody){
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.saveUserToken(response)
+        }
+        if (response.isUserExists) {
+            replaceFragment(HomeFragment(), false)
+        } else {
+            replaceFragment(RegistrationFragment(), true)
+        }
+    }
+
+    override fun loadError(response: ErrorResponseBody) {
+        showToast(response.detail[0].msg)
+        super.loadError(response)
     }
 
     override fun onAttach(context: Context) {

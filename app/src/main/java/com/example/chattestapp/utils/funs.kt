@@ -30,13 +30,11 @@ fun replaceFragment(fragment: Fragment, addStack: Boolean = true, key: String = 
 }
 
 fun restartActivity() {
-    /* Функция расширения для AppCompatActivity, позволяет запускать активити */
     val intent = Intent(APP_ACTIVITY, MainActivity::class.java)
     APP_ACTIVITY.startActivity(intent)
     APP_ACTIVITY.finish()
 }
 
 fun showToast(message: String) {
-    /* Функция показывает сообщение */
     Toast.makeText(APP_ACTIVITY, message, Toast.LENGTH_SHORT).show()
 }

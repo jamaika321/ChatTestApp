@@ -1,16 +1,20 @@
 package com.example.chattestapp.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import com.example.api.models.CheckAuthCodeResponseBody
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.chattestapp.App
 import com.example.chattestapp.databinding.ActivityMainBinding
 import com.example.chattestapp.ui.homeFragment.HomeFragment
 import com.example.chattestapp.ui.loginFragment.LoginFragment
+import com.example.chattestapp.ui.registrationFragment.RegistrationFragment
 import com.example.chattestapp.utils.APP_ACTIVITY
+import com.example.chattestapp.utils.launchOn
 import com.example.chattestapp.utils.replaceFragment
-import kotlinx.coroutines.*
+import com.example.chattestapp.utils.showToast
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
@@ -31,23 +35,26 @@ class MainActivity : AppCompatActivity() {
 
         (application as App).appComponent.inject(this)
 
-        checkRefreshToken()
+        //TODO
+        replaceFragment(RegistrationFragment(), false)
+//        getRefreshToken()
+//        initVars()
     }
 
-    private fun checkRefreshToken(){
-        CoroutineScope(Dispatchers.Main + Job()).launch {
-            val result = getRefreshToken()
-            Log.i(TAG, "checkRefreshToken: ")
-//            if (result.refreshToken.) {
-//                replaceFragment(LoginFragment(), false)
-//            } else {
-//                replaceFragment(HomeFragment(), false)
-//            }
+    private fun initVars(){
+        viewModel.token.launchOn(lifecycleScope) {
+            if (it.refreshToken.isEmpty()){
+                replaceFragment(LoginFragment(), false)
+            } else {
+                replaceFragment(HomeFragment(), false)
+            }
         }
     }
 
-    private suspend fun getRefreshToken(): CheckAuthCodeResponseBody = withContext(Dispatchers.IO) {
-        viewModel.getRefreshToken()
+    private fun getRefreshToken() {
+        val job = CoroutineScope(Dispatchers.IO).launch {
+            viewModel.getRefreshToken()
+        }
+        job.start()
     }
-
 }
