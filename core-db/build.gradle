@@ -46,11 +46,10 @@ dependencies {
 
     implementation roomKtx
     implementation roomRuntime
-    implementation roomCompiler
+    kapt roomCompiler
 
     //Dagger
     implementation dagger
     kapt daggerCompiler
-
-    implementation 'com.google.guava:guava:27.0.1-android'
+    kapt "org.xerial:sqlite-jdbc:3.36.0"
 }

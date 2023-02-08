@@ -1,7 +1,6 @@
 package com.example.chattestapp.ui.verifyFragment
 
 import androidx.lifecycle.ViewModel
-import com.example.api.interactors.CheckAuthCode
 import com.example.api.interfaces.Repository
 import com.example.api.models.CheckAuthCodeResponseBody
 import com.example.api.models.ErrorResponseBody

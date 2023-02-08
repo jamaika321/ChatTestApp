@@ -46,7 +46,7 @@ dependencies {
 
     implementation roomKtx
     implementation roomRuntime
-    implementation roomCompiler
+    kapt roomCompiler
 
     //Retrofit
     implementation retrofit
