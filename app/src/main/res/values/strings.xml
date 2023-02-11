@@ -8,4 +8,5 @@
     <string name="name">Имя</string>
     <string name="user_name">Имя пользователя</string>
     <string name="registration_btn">Зарегистрироваться</string>
+    <string name="error_format_number">Неправильный формат номера!</string>
 </resources>

@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         (application as App).appComponent.inject(this)
 
         //TODO
-        replaceFragment(RegistrationFragment(), false)
+        replaceFragment(HomeFragment(), false)
 //        getRefreshToken()
 //        initVars()
     }

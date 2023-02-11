@@ -2,6 +2,7 @@ package com.example.chattestapp.ui.homeFragment
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
@@ -17,6 +18,7 @@ import com.example.chattestapp.ui.chatFragment.ChatFragment
 import com.example.chattestapp.ui.profileFragment.ProfileFragment
 import com.example.chattestapp.utils.replaceFragment
 import com.example.chattestapp.utils.showToast
+import kotlinx.coroutines.*
 import javax.inject.Inject
 import kotlin.system.exitProcess
 
@@ -33,9 +35,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         setHasOptionsMenu(true)
 
         binding.rcView.layoutManager = LinearLayoutManager(context)
-        adapter.data = viewModel.getChatsList()
-        binding.rcView.adapter = adapter
+        getChatsList()
+
         super.setListeners()
+    }
+
+    private fun getChatsList() {
+        val handler = CoroutineExceptionHandler { _, throwable ->
+            Log.i(TAG, "handler : $throwable")
+        }
+        CoroutineScope(Dispatchers.Main + SupervisorJob() + handler).launch {
+            val chatList = withContext(Dispatchers.IO){ viewModel.getChatsList() }
+            adapter.data = chatList
+            binding.rcView.adapter = adapter
+        }
     }
 
     override fun onBackPressed() {

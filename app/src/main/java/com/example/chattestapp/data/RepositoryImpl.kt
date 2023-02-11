@@ -11,16 +11,14 @@ import javax.inject.Inject
 
 
 class RepositoryImpl @Inject constructor(private val db: AppDatabase) : Repository {
-    override suspend fun authorizationWithPhone(phoneNumber: String): Call<Either<ErrorResponseBody, AuthUserResponseBody>> {
-        val phone = AuthUserRequestBody(phoneNumber)
+    override suspend fun sendAuthCode(phoneNumber: AuthUserRequestBody): Call<Either<ErrorResponseBody, AuthUserResponseBody>> {
         return RetrofitBuilder.makeService<ApiService>(true)
-            .authUser(phone)
+            .sendAuthCode(phoneNumber)
     }
 
-    override suspend fun checkAuthCode(code: String): Call<Either<ErrorResponseBody, CheckAuthCodeResponseBody>> {
-        val authCodeModel = CheckAuthCodeRequestBody("+79219999999", code)
+    override suspend fun checkAuthCode(code: CheckAuthCodeRequestBody): Call<Either<ErrorResponseBody, CheckAuthCodeResponseBody>> {
         return RetrofitBuilder.makeService<ApiService>(true)
-            .checkAuthCode(authCodeModel)
+            .checkAuthCode(code)
     }
 
     override suspend fun register(user: RegisterRequestBody): Call<Either<ErrorResponseBody, RegisterResponseBody>> {
@@ -36,7 +34,7 @@ class RepositoryImpl @Inject constructor(private val db: AppDatabase) : Reposito
         return db.userInfoDao().getUserToken()
     }
 
-    override fun getChatsList(): List<ChatItemView> {
+    override suspend fun getChatsList(): List<ChatItemView> {
         return listOf(ChatItemView(1,"","Anton", "Hello", "24 Nov")
             ,ChatItemView(2,"","Oleg", "Playing", "02 Feb")
             ,ChatItemView(3,"","Aleksei", "My grandfather was a hero", "9 May")

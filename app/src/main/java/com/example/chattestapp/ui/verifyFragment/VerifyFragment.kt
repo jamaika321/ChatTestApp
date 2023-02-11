@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.example.api.models.CheckAuthCodeRequestBody
 import com.example.api.models.CheckAuthCodeResponseBody
 import com.example.api.models.ErrorResponseBody
 import com.example.chattestapp.App
@@ -30,10 +31,13 @@ class VerifyFragment : BaseFragment<FragmentVerifyBinding>() {
 
     @Inject
     lateinit var viewModel: VerifyViewModel
+    private var phoneNumber: String? = null
 
     override fun setListeners() {
+        phoneNumber = this.requireArguments().getString("phone")
         binding.verifyBtn.setOnClickListener {
-            checkVerifyCode()
+//            checkVerifyCode()
+            showToast(phoneNumber!!)
         }
         super.setListeners()
     }
@@ -49,7 +53,7 @@ class VerifyFragment : BaseFragment<FragmentVerifyBinding>() {
     
     private fun sendAuthCode(code: String){
         CoroutineScope(Dispatchers.IO).launch {
-            viewModel.checkAuthCode(code).enqueue(object : Callback<Either<ErrorResponseBody, CheckAuthCodeResponseBody>> {
+            viewModel.checkAuthCode(CheckAuthCodeRequestBody(phoneNumber!!, code)).enqueue(object : Callback<Either<ErrorResponseBody, CheckAuthCodeResponseBody>> {
                 override fun onResponse(
                     call: Call<Either<ErrorResponseBody, CheckAuthCodeResponseBody>>,
                     response: Response<Either<ErrorResponseBody, CheckAuthCodeResponseBody>>
@@ -66,14 +70,18 @@ class VerifyFragment : BaseFragment<FragmentVerifyBinding>() {
         }
     }
 
-    private fun loadSuccess(response: CheckAuthCodeResponseBody){
+    private fun loadSuccess(response: CheckAuthCodeResponseBody) {
         CoroutineScope(Dispatchers.IO).launch {
             viewModel.saveUserToken(response)
         }
         if (response.isUserExists) {
             replaceFragment(HomeFragment(), false)
         } else {
-            replaceFragment(RegistrationFragment(), true)
+            if (phoneNumber != null) {
+                replaceFragment(RegistrationFragment(), true, "phone", phoneNumber!!)
+            } else {
+                replaceFragment(RegistrationFragment(), true)
+            }
         }
     }
 
