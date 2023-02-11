@@ -61,24 +61,17 @@ dependencies {
 
     implementation roomKtx
     implementation roomRuntime
-    implementation roomCompiler
-
+    kapt roomCompiler
 
     //Dagger
     implementation dagger
     kapt daggerCompiler
-
-    //ViewPager
-    implementation viewPager
+    kapt "org.xerial:sqlite-jdbc:3.36.0"
 
     //Picasso
     implementation picasso
 
     //Retrofit
     implementation retrofit
-
-    implementation 'com.google.guava:guava:27.0.1-android'
-
-    implementation 'com.hbb20:ccp:2.5.1'
     
 }
